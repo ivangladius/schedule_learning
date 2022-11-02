@@ -1,7 +1,7 @@
 
 #!/bin/bash
 
-g++ -o main main.cpp sched.cpp -Wall -Wextra -pedantic
+g++ -o main main.cpp sched.cpp -Wall -Wextra -pedantic -lncurses
 ./main
 if [[ -x "main" ]];then
    rm main
