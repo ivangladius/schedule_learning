@@ -13,6 +13,7 @@ class Sched {
 
 protected:
   task_list_t task_list;
+  std::vector<int> correct;
   std::vector<int> answer;
 
 public:
@@ -28,11 +29,15 @@ public:
   std::vector<int>& get_answer();
   void add_to_answer(int);
 
+  virtual void calc() = 0;
+  virtual void verify() = 0;
+  virtual void display() = 0;
+
   void debug_task_list() const {
     int x = 1;
     for (const auto& t : task_list) {
-      std::printf("T%d(%.2lf, %.2lf)\n",
-                  x, t.first, t.second);
+      std::printf("T%d(%.2lf, %.2lf) = %.3lf\n",
+                  x, t.first, t.second, (t.first/t.second));
       x++;
     }
 
