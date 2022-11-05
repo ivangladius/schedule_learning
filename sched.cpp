@@ -8,6 +8,9 @@
 #include <iostream>
 
 #include <ncurses.h>
+#include <curses.h>
+#include <string.h>
+#include <stdlib.h>
 
 #include "colors.hpp"
 
@@ -55,45 +58,59 @@ int Sched::read_tasks() {
   cprint(fwhite, 2, 2, "How many tasks ( maximum 10): ");
   move(2, 32);
 
-
-
   int input;
-
   int n = 0;
-  for (; n < 3; ++n) {
+  int ty, tx;
 
-    input = getch();
+  do {
 
-    if (input == 10)
-      break;
+	input = getch();
 
-    else if (input == KEY_BACKSPACE) {
-      cprint(bblue, 22, 22, "GOT BACKSPACE");
-      n--;
-      move(2, 32+n-1);
-      delch();
-      continue;
-    }
+	if (input == 10)
+	  break;
 
-    else if ((char)input >= '0' && (char)input <= '9' && n != 2) {
-      number[n] = input;
-      move(2, 32+n);
-      echochar(input);
-    }
+	else if (input == KEY_BACKSPACE) {
+	  getyx(stdscr, ty, tx);
+	  // cprint(fred, 31, 31, "Curs: %d x %d", ty, tx);
+	  if (tx < 31)
+		continue;
 
-  }
+	  // move(31, 0);
+	  // clrtoeol();
+
+	  cprint(bblue, 15, 15, "TRIGGER BACKSPACE: %c", input);
+	  move(2, 32+n - 1);
+	  n--;
+	  echochar(' ');
+	}
+	else if ('0' <= (char)input && (char)input <= '9'){
+	  cprint(bblue, 15, 15, "n : %d\tTRIGGER : %c", n, input);
+	  move(2, 32+n);
+	  echochar(input);
+	  number[n] = (char)input;
+	  cprint(byellow, 18, 18, "number: %s", number);
+	  n++;
+	  // number[n] = (char)input;
+	}
+
+  } while (n <= 20);
+
+
+  cprint(fblue, 21, 21, "end n : %d", n);
+  
+  memset(number+n, 0, sizeof(number)/sizeof(number[0])); 
+
 
   if (n == 3 || n == 0 || atoi(number) <= 0 || atoi(number) > 10) {
-    cprint(bred, 15, 15, "NUMBER MUST BE BEWTEEN 1 - 10 !!! ( Press ENTER ");
+	cprint(bred, 15, 15, "NUMBER MUST BE BEWTEEN 1 - 10 !!! ( Press ENTER ");
   }
 
   if (atoi(number) <= 10)
-    cprint(bblue, 8, 8, "You entered: %d\n", atoi(number));
+	cprint(bblue, 8, 8, "You entered: %d\n", atoi(number));
 
   return 0;
 
 }
-
 
 
 
