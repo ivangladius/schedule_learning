@@ -1,8 +1,8 @@
 
 #!/bin/bash
 
-g++ -o main main.cpp sched.cpp edf.cpp -Wall -Wextra -pedantic -lncurses
-./main
+g++ -o main main.cpp sched.cpp edf.cpp colors.cpp -Wall -Wextra -pedantic -lncurses
+./main $(stty size)
 
 if [[ -x "main" ]];then
    rm main

@@ -10,6 +10,7 @@
 class EDF : public Sched {
 public:
   EDF();
+  EDF(int, int);
   EDF(std::initializer_list<task_t>);
   ~EDF();
 
